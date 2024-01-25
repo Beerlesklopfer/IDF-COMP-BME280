@@ -1,0 +1,81 @@
+menu "I2C Configuration"
+
+    orsource "$IDF_PATH/examples/common_components/env_caps/$IDF_TARGET/Kconfig.env_caps"
+
+    config I2C_MASTER_INTERFACE_NUMBER
+        int "Port number of I²C"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+        default 0
+        help
+            GPIO number for I2C Master clock line.
+
+    config I2C_MASTER_SCL
+        int "SCL GPIO pin"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+        default 19 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        default 2
+        help
+            GPIO number for I2C Master clock line.
+
+    config I2C_MASTER_SDA
+        int "SDA GPIO pin"
+        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+        default 18 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        default 1
+        help
+            GPIO number for I2C Master data line.
+
+    config I2C_MASTER_ACK
+        bool "I2C ACK CHECK ENABLE"
+            range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+            default true
+            help
+                I2C master will check ack from slave
+        
+    config I2C_MASTER_FREQ_KHZ
+        int "I2C master frequency [kHz]"
+        range 1 100
+        default 40
+        help
+            SCL clock speed in kHz.
+
+    config BME280_SENSOR_ADDR
+        int "BME280 address"
+        range 118 119
+        default 40
+        help
+            SCL clock speed in kHz.
+
+endmenu
+
+menu "BME280 Sensor Configuration"
+    config BME280_SAMPLE_COUNT
+        int "Number of samples"
+        range 10 100
+        default 50
+        help
+            Number of samples to read.
+
+    config BME280_DOUBLE_ENABLE
+        bool "All values are in double values"
+        default true
+        help
+            Wether all sensor values are in double or uint32 values.
+        
+    config BME280_AVG_MEDIAN
+        bool "Use median to calculate avg value"
+        default true
+        help
+            Wether use mean or median to calculate the average value.
+
+    config BME280_INTERFACE
+                choice BME280_BUS_TYPE
+                prompt "Select bus type of chip"
+                default BME280_USE_I2C
+        
+                config BME280_USE_SPI
+                    bool "SPI"
+                config BME280_USE_I2C
+                    bool "I2C"
+            endchoice        
+endmenu
